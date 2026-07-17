@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genshin Farm Planner</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Genshin Impact Farm Planner</h1>
+    <p>Keep track of your active domain farm goals across the week</p>
+  </header>
+
+  <div class="container">
+    <!-- Left Column: Settings and Input Form -->
+    <div class="sidebar">
+      <div class="panel">
+        <h2>Add Item to Farm</h2>
+        <form id="farmForm">
+          <!-- Item Name -->
+          <div class="form-group">
+            <label for="itemName">Item Name</label>
+            <input type="text" id="itemName" class="form-control" placeholder="e.g. Teachings of Admonition" required>
+          </div>
+
+          <!-- Parent / Drop Group ID (maps to active days) -->
+          <div class="form-group">
+            <label for="itemFamily">Item Family</label>
+            <input class="form-control" list="itemFamilies" id="itemFamily" name="itemFamily">
+            <datalist id="itemFamilies"></datalist>
+          </div>
+
+          <!-- Amounts Required and Owned -->
+          <div class="form-group qty-row">
+            <div>
+              <label for="amtOwned">Amt Owned</label>
+              <input type="number" id="amtOwned" class="form-control" min="0" value="0" required>
+            </div>
+            <div>
+              <label for="amtNeeded">Amt Needed</label>
+              <input type="number" id="amtNeeded" class="form-control" min="1" value="1" required>
+            </div>
+          </div>
+
+          <button type="button" class="btn" id="addToPlannerButton">Add to Planner</button>
+        </form>
+      </div>
+
+      <!-- Current Items Tracked -->
+      <div class="panel" style="margin-top: 1.5rem;">
+        <h2>My Items</h2>
+        <div id="farmItemsList" class="farm-items-list">
+          <!-- Items will render dynamically here -->
+            <div class="farm-item-card">
+                <div class="info">
+                    <h4>Item Name</h4>
+                    <p>Progress: 0/1</p>
+                </div>
+            </div>
+            <div class="farm-item-card">
+                <div class="info">
+                    <h4>Item Name</h4>
+                    <p>Progress: 0/10</p>
+                </div>
+            </div>          
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Weekly Schedule Grid -->
+    <div class="main-content">
+      <div class="panel">
+        <h2>Weekly Farming Rotations</h2>
+        <div id="weekGrid" class="week-grid">
+          <!-- 7 days of the week will render here -->
+           <div class="day-column">
+            <h3>Sunday</h3>
+              <div class="day-list">
+                <div class="schedule-item">
+                    <strong>Item Name</strong>
+                    <div class="qty-badge">Needed: 0/10</div>
+                </div>
+
+                <div class="schedule-item">
+                    <strong>Item Name 2</strong>
+                    <div class="qty-badge">Needed 0/100</div>
+                </div>
+
+              </div>
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</html>

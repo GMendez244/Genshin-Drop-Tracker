@@ -1,0 +1,319 @@
+    :root {
+      --bg-color: #1a1b26;
+      --panel-color: #24283b;
+      --accent-color: #bb9af3;
+      --text-color: #a9b1d6;
+      --text-bright: #c0caf5;
+      --border-color: #414868;
+      --danger-color: #f7768e;
+      --success-color: #9ece6a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding: 2rem;
+      line-height: 1.5;
+    }
+
+    header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      color: var(--text-bright);
+      margin-bottom: 0.5rem;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Panel Styles */
+    .panel {
+      background-color: var(--panel-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+
+    .panel h2 {
+      color: var(--text-bright);
+      font-size: 1.25rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+
+    /* Form Fields */
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-bright);
+    }
+
+    .form-control {
+      width: 100%;
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-bright);
+      padding: 0.75rem;
+      border-radius: 4px;
+      font-size: 0.95em;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-color);
+    }
+
+    /* Target inputs for side-by-side quantities */
+    .qty-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .btn {
+      width: 100%;
+      background-color: var(--accent-color);
+      color: var(--bg-color);
+      border: none;
+      padding: 0.75rem;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Farm List & Tracking Cards */
+    .farm-items-list {
+      margin-top: 1.5rem;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .farm-item-card {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .farm-item-card .info h4 {
+      color: var(--text-bright);
+    }
+
+    .farm-item-card .info p {
+      font-size: 0.8rem;
+    }
+
+    .btn-delete {
+      background: none;
+      border: none;
+      color: var(--danger-color);
+      cursor: pointer;
+      font-weight: bold;
+      padding: 0.25rem 0.5rem;
+    }
+
+    /* Week Schedule Grid */
+    .week-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      row-gap: 9px;
+    }
+/*
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 1200px) {
+      .week-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .week-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+*/
+    .day-column {
+      background-color: var(--panel-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      
+      min-height: 250px;
+      min-width: 250px;
+      
+      font-size: 2em;
+    }
+
+    .day-column.today {
+      border: 2px solid var(--accent-color);
+    }
+
+    .day-column.today h3 {
+      color: var(--accent-color);
+    }
+
+    .day-column h3 {
+      font-size: 0.5em;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-bright);
+    }
+
+    .day-list {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .schedule-item {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      padding: 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+
+    .schedule-item .qty-badge {
+      
+      margin-top: 0.25rem;
+      padding: 0.1rem 0.4rem;
+      background-color: var(--border-color);
+      border-radius: 3px;
+      color: var(--text-bright);
+      font-size: 0.75rem;
+      
+    }
+
+    .day-column[today="true"]{
+      border: 1px solid red;
+    }
+
+
+    .day-column[today="true"] > strong{
+      color: red;
+      font-weight: bolder;
+    }
+
+    .checkbox-container{
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+
+    }
+
+    .checkbox-container input[type="number"]{
+      width: 25%;
+      text-align: right;
+      border-radius: 9px;
+      padding: 0px 3px;
+    }
+
+    .checkbox-container label{
+      margin: 0;
+      font-size: 0.7em;
+    }
+
+
+    .schedule-item:hover{
+      background-color: white;
+      border: 1px solid black;
+    }
+
+
+    h4 {
+      font-size: 1.5em;
+      color: var(--text-color);
+      text-align: left;
+    }
+
+
+    .schedule-item > *{
+      pointer-events: none;
+    }
+    
+    .removeButton{
+      margin-top: 9px;
+      width: 100%;
+      background-color: var(--danger-color);
+      color: var(--bg-color);
+      border: none;
+      padding: 0.75rem;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: opacity 0.2s;
+    }
+
+[completion="0"]{
+  accent-color: red;
+}
+[completion="25"]{
+  accent-color: orange;
+}
+
+[completion="50"]{
+  accent-color: yellow;
+}
+
+[completion="75"]{
+  accent-color: lightgreen;
+}
+
+[completion="100"]{
+  accent-color: green;
+}
+
+[requiresResin="true"]{
+  border-color: lightblue;
+}
+
+[requiresResin="true"]{
+  border-color: green;
+}

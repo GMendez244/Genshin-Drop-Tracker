@@ -21,6 +21,11 @@ const ParentInformation = [
         "requiresResin": true
     },
     {
+        "id": "Once a week - Resin",
+        "availableDays": [DAY.SUN],
+        "requiresResin": true
+    },
+    {
         "id": "Every other day (Monday Start)",
         "availableDays": [DAY.MON, DAY.WED, DAY.FRI],
         "requiresResin": false

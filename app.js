@@ -21,7 +21,7 @@ const ParentInformation = [
         "requiresResin": true
     },
     {
-        "id": "Once a week - Resin",
+        "id": "Once a week",
         "availableDays": [DAY.SUN],
         "requiresResin": true
     },
@@ -74,35 +74,65 @@ function CompareItems(itemA, itemB){
 
     // A doesn't matter because it's already farmed and B isn't
     if (isFarmingComplete(itemA)){
-        return 1;
+        return -1;
     }
 
     // B is farmed and A isn't so prioritize A.
     if (isFarmingComplete(itemB)){
-        return -1;
-    }
-
-    // If both have the same resinValue, compare the completion rate
-    if (itemA.requiresResin === itemB.requiresResin){
-        let aCompleted = itemA.amountOwned / itemA.amountRequired;
-        let bCompleted = itemB.amountOwned / itemB.amountRequired;
-
-        return bCompleted - aCompleted;
-    }
-
-
-    // If A requires resin and B doesn't
-    if (itemA.requiresResin){
-        return -1;
-    }else{
         return 1;
     }
+
+    if (itemA.limitedAvailability !== itemB.limitedAvailability){
+        if(itemA.limitedAvailability){
+            return -1;
+        }else{
+            return 1;
+        }
+    }
+
+
+    if (itemA.requiresResin !== itemB.requiresResin){
+        if (itemA.requiresResin){
+            return -1;
+        }else{
+            return 1;
+        }
+    }
+
+    let aCompleted = itemA.amountOwned / itemA.amountRequired;
+    let bCompleted = itemB.amountOwned / itemB.amountRequired;
+ 
+    return aCompleted - bCompleted;
+
+
+/*    if (itemA.limitedAvailability === itemB.limitedAvailability){
+        console.log("ItemA", itemA, "ItemB", itemB);
+        // If both have the same resinValue, compare the completion rate
+        if (itemA.requiresResin === itemB.requiresResin){
+            console.log("Same resin value")
+        }
+
+
+        // If A requires resin and B doesn't
+        if (itemA.requiresResin){
+
+            return 1;
+        }else{
+            return -1;
+        }
+    }
+
+    if (itemA.limitedAvailability){
+        return 1;
+    }else{
+        return -1;
+    }
+*/
 
 }
 
 function FillDataListWithParents(e){
     let parentInfoDataList = document.getElementById("itemFamilies");
-    console.log(parentInfoDataList);
     for(const info of ParentInformation){
         let optItem = document.createElement("option");
         optItem.value = info.id;
@@ -167,7 +197,6 @@ function ValidateAddItemInputs(itemName, itemFamily, amountOwned, amountRequired
     }
 
     const parentInfo = getParentInfoById(ParentInformation, itemFamily.value);
-    console.log(`ParentInfo: ${parentInfo}`);
     if (parentInfo === false){
         itemFamily.setCustomValidity("Invalid Family")
         itemFamily.reportValidity();
@@ -246,8 +275,6 @@ function RemoveItemFromItemList(e){
 
 function getCompletionValue(amountOwned, amountNeeded){
     const difference = Math.min(amountOwned / amountNeeded, 1);
-    console.log(amountOwned, ',', amountNeeded);
-    console.log("Completion value", difference);
     if (difference < 0.25){
         return "0";
     }
@@ -272,6 +299,7 @@ function UpdateFarmItemsListContainer(farmItemsListContainer){
         let farmItem = itemFarmList[i];
         let farmItemCard = document.createElement("div");
         farmItemCard.classList.add("farm-item-card");
+
 
         farmItemCard.setAttribute("index", i);
 
@@ -315,7 +343,6 @@ function UpdateFarmItemsListContainer(farmItemsListContainer){
         infoDiv.appendChild(removeItemButton);
 
         farmItemCard.appendChild(infoDiv);
-        itemFarmList[i].domContent = farmItemCard;
         farmItemsListContainer.appendChild(farmItemCard);
     }
 }
@@ -348,12 +375,15 @@ function UpdateWeekGrid(weekGridContainer){
         
         for (const farmItem of itemFarmList){
             let pInfo = getParentInfoById(ParentInformation, farmItem.itemFamily);
-            console.log(pInfo);
             if (pInfo.availableDays.includes(DAYVAL[day])){
                 let scheduleItem = document.createElement("button");
                 scheduleItem.classList.add("schedule-item");
                 scheduleItem.setAttribute("requiresResin", farmItem.requiresResin);
 
+                if (farmItem.limitedAvailability){
+                    scheduleItem.setAttribute("limitedAvailability", true);
+                }
+                
                 let itemNameStrong = document.createElement("h4");
                 itemNameStrong.innerText = farmItem.name;
                 let qtyBadgeDiv = document.createElement("div");
@@ -399,8 +429,10 @@ function UpdateDisplay(){
     UpdateFarmItemsListContainer(farmItemsListContainer);
     UpdateWeekGrid(weekGridContainer);
 }
+
+
 function isFarmingComplete(item){
-    return item.amountOwned < item.amountRequired;    
+    return item.amountOwned >= item.amountRequired;    
 }
 
 function AddItemToList(){
@@ -410,17 +442,27 @@ function AddItemToList(){
     let amountRequired = document.getElementById("amtNeeded");
 
     if (!ValidateAddItemInputs(itemName, itemFamily, amountOwned, amountRequired)){
-        console.log("Invalid input");
         return;
     }
+
+
     let parentInfo = getParentInfoById(ParentInformation, itemFamily.value);
+    let limitedAvailability = false;
+    const TotalDayCount = 7;
+
+
+    if (parentInfo.availableDays.length < TotalDayCount){
+        limitedAvailability = true;
+    }
+
+
     let item = {
         "name": itemName.value,
         "itemFamily": itemFamily.value,
         "amountOwned": parseInt(amountOwned.value),
         "amountRequired": parseInt(amountRequired.value),
         "requiresResin": parentInfo.requiresResin,
-        "domContent": null
+        "limitedAvailability": limitedAvailability
     };
 
 
@@ -430,4 +472,3 @@ function AddItemToList(){
     ResetAddItemForm(itemName, itemFamily, amountOwned, amountRequired);
     UpdateDisplay();
 }
-

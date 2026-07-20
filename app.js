@@ -512,6 +512,14 @@ function isFarmingComplete(item){
     return item.amountOwned >= item.amountRequired;    
 }
 
+
+function UpdateItemPriorities(){
+    for (let i = 0; i < itemFarmList.length; i++){
+        const parentInfo = getParentInfoById(ParentInformation, itemFarmList[i].itemFamily);
+        itemFarmList[i].priority = parentInfo.priority;
+    }
+}
+
 function AddItemToList(){
     let itemName = document.getElementById("itemName");
     let itemFamily = document.getElementById("itemFamily");
@@ -540,7 +548,8 @@ function AddItemToList(){
         "amountRequired": parseInt(amountRequired.value),
         "requiresResin": parentInfo.requiresResin,
         "limitedAvailability": limitedAvailability,
-        "dayCount": dayCount
+        "dayCount": dayCount,
+        "priority": parentInfo.priority
     };
 
 

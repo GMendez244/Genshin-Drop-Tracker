@@ -5,49 +5,67 @@ const DAY = {
     "WED" : 3,
     "THUR": 4,
     "FRI" : 5,
-    "SAT" : 6
+    "SAT" : 6,
 };
 
+const PRIORITY = {
+    "LOW": 3,
+    "NORMAL": 2,
+    "HIGH": 1
+}
 
 const ParentInformation = [
     {
         "id": "Daily",
         "availableDays": [DAY.SUN, DAY.MON, DAY.TUE, DAY.WED, DAY.THUR, DAY.FRI, DAY.SAT],
-        "requiresResin": false
+        "requiresResin": false,
+        "priority": PRIORITY.NORMAL
     },
     {
         "id": "Daily-Resin",
         "availableDays": [DAY.SUN, DAY.MON, DAY.TUE, DAY.WED, DAY.THUR, DAY.FRI, DAY.SAT],
-        "requiresResin": true
+        "requiresResin": true,
+        "priority": PRIORITY.NORMAL
+    },
+    {
+        "id": "Daily-Resin (Low Priority)",
+        "availableDays": [DAY.SUN, DAY.MON, DAY.TUE, DAY.WED, DAY.THUR, DAY.FRI, DAY.SAT],
+        "requiresResin": true,
+        "priority": PRIORITY.LOW
     },
     {
         "id": "Once a week",
         "availableDays": [DAY.SUN],
-        "requiresResin": true
+        "requiresResin": true,
+        "priority": PRIORITY.HIGH
     },
     {
-        "id": "Every other day (Monday Start)",
+        "id": "Local Speciality Farming (Monday, Wed, Fri)",
         "availableDays": [DAY.MON, DAY.WED, DAY.FRI],
-        "requiresResin": false
+        "requiresResin": false,
+        "priority": PRIORITY.NORMAL
     },
     {
         "id": "Group A - Resin (Monday, Thursday, Sunday)",
         "availableDays": [DAY.MON, DAY.THUR, DAY.SUN],
-        "requiresResin": true
+        "requiresResin": true,
+        "priority": PRIORITY.NORMAL
     },
     {
         "id": "Group B - Resin (Tuesday, Friday, Sunday)",
         "availableDays": [DAY.TUE, DAY.FRI, DAY.SUN],
-        "requiresResin": true
+        "requiresResin": true,
+        "priority": PRIORITY.NORMAL
     },
     {
         "id": "Group C - Resin (Wednesday, Saturday, Sunday)",
-        "availableDays": [DAY.WED, DAY.SAT, DAY.SUN]
+        "availableDays": [DAY.WED, DAY.SAT, DAY.SUN],
+        "requiresResin": true,
+        "priority": PRIORITY.NORMAL
     }
 ];
 
 
-let currentlyFarmableIds = undefined;
 
 let itemFarmList = [];
 
@@ -82,6 +100,14 @@ function CompareItems(itemA, itemB){
         return 1;
     }
 
+    if (itemA.priority !== itemB.priority){
+        if (itemA.priority < itemB.priority){
+            return -1;
+        }else{
+            return 1;
+        }
+    }
+
     if (itemA.limitedAvailability !== itemB.limitedAvailability){
         if(itemA.limitedAvailability){
             return -1;
@@ -98,6 +124,15 @@ function CompareItems(itemA, itemB){
             return 1;
         }
     }
+
+    if (itemA.dayCount !== itemB.dayCount){
+        if (itemA.dayCount < itemB.dayCount){
+            return -1;
+        }else{
+            return 1;
+        }
+    }
+
 
     let aCompleted = itemA.amountOwned / itemA.amountRequired;
     let bCompleted = itemB.amountOwned / itemB.amountRequired;
@@ -152,7 +187,6 @@ function InitializeData(e){
         itemFarmList = [];
     }
     FillDataListWithParents(e);
-    currentlyFarmableIds = getAllFarmableIds(ParentInformation);
     document.getElementById("addToPlannerButton").addEventListener("click", AddItemToList);
     UpdateDisplay();
 }
@@ -246,11 +280,15 @@ function ResetAddItemForm(itemName, itemFamily, amountOwned, amountRequired){
 function UpdateAmountOwned(e){
     let parentNode = e.target.parentNode.parentNode.parentNode;
     let index = parentNode.getAttribute("index");
+    let id = parentNode.getAttribute("id");
     let weekGridContainer = document.getElementById("weekGrid");
+
 
     itemFarmList[index].amountOwned = e.target.value;
     UpdateLocalInformation();
-    UpdateDisplay()
+    UpdateDisplay();
+
+    document.getElementById(id).scrollIntoView({behavior: "smooth", block: "start"});
 }
 
 function UpdateAmountRequired(e){
@@ -260,7 +298,9 @@ function UpdateAmountRequired(e){
     
     itemFarmList[index].amountRequired = e.target.value;
     UpdateLocalInformation();
-    UpdateDisplay()
+    UpdateDisplay();
+    document.getElementById(id).scrollIntoView({behavior: "smooth", block: "start"});
+
 }
 
 
@@ -292,17 +332,18 @@ function getCompletionValue(amountOwned, amountNeeded){
     }
 }
 
-function UpdateFarmItemsListContainer(farmItemsListContainer){
-    farmItemsListContainer.replaceChildren();
 
-    for (let i = 0; i < itemFarmList.length; i++){
-        let farmItem = itemFarmList[i];
+function CreateFarmItemCard(itemIndex){
+        if (itemIndex >= itemFarmList.length || itemIndex < 0){
+            return null;
+        }
+        const farmItem = itemFarmList[itemIndex];        
         let farmItemCard = document.createElement("div");
         farmItemCard.classList.add("farm-item-card");
 
 
-        farmItemCard.setAttribute("index", i);
-
+        farmItemCard.setAttribute("index", itemIndex);
+        farmItemCard.setAttribute("id", farmItem.name);
         let infoDiv = document.createElement("div");
         infoDiv.classList.add("info");
 
@@ -326,7 +367,11 @@ function UpdateFarmItemsListContainer(farmItemsListContainer){
 
         
         let removeItemButton = document.createElement("button");
+        if(isFarmingComplete(farmItem)){
+            removeItemButton.setAttribute("complete", true);
+        }
         removeItemButton.classList.add("removeButton");
+
         removeItemButton.textContent = "Remove";
         removeItemButton.addEventListener("click", RemoveItemFromItemList);
 
@@ -343,25 +388,46 @@ function UpdateFarmItemsListContainer(farmItemsListContainer){
         infoDiv.appendChild(removeItemButton);
 
         farmItemCard.appendChild(infoDiv);
-        farmItemsListContainer.appendChild(farmItemCard);
-    }
+        return farmItemCard;
 }
 
-function UpdateWeekGrid(weekGridContainer){
+function UpdateFarmItemsListContainer(farmItemsListContainer){
+    farmItemsListContainer.replaceChildren();
+
+    for (let i = 0; i < itemFarmList.length; i++){
+        const farmItemCard = CreateFarmItemCard(i);        
+        farmItemsListContainer.appendChild(farmItemCard);
+    }
+    console.log(farmItemsListContainer);
+}
+
+
+function getDayString(dayIndex){
     const DAYSINWEEK = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    return DAYSINWEEK[dayIndex];
+}
+
+function getDayVal(dayString){
     const DAYVAL = {"Sunday": DAY.SUN, "Monday": DAY.MON, "Tuesday": DAY.TUE,
         "Wednesday": DAY.WED, "Thursday": DAY.THUR, "Friday": DAY.FRI, "Saturday": DAY.SAT
     };
 
-    let today = new Date().getDay();
+    if (Object.keys(DAYVAL).includes(dayString)){
+        return DAYVAL[dayString];
+    }else{
+        return null;
+    }
+}
 
-    weekGridContainer.replaceChildren();
-
-    for(const day of DAYSINWEEK){
+function CreateDayColumn(dayIndex){
+        let today = new Date().getDay();
         let dayColumn = document.createElement("day-column");
+        const day = getDayString((today + dayIndex) % Object.keys(DAY).length);
+
+
         dayColumn.classList.add("day-column");
 
-        if (today === DAYVAL[day]){
+        if (today === getDayVal(day)){
             dayColumn.setAttribute("today", true);
         }
 
@@ -373,13 +439,16 @@ function UpdateWeekGrid(weekGridContainer){
         dayList.classList.add("day-list");
         
         
+        let requiresResin = true;
         for (const farmItem of itemFarmList){
             let pInfo = getParentInfoById(ParentInformation, farmItem.itemFamily);
-            if (pInfo.availableDays.includes(DAYVAL[day])){
+
+
+            if (pInfo.availableDays.includes(getDayVal(day))){
                 let scheduleItem = document.createElement("button");
                 scheduleItem.classList.add("schedule-item");
                 scheduleItem.setAttribute("requiresResin", farmItem.requiresResin);
-
+                scheduleItem.setAttribute("id", `${day}-${farmItem.name}`);
                 if (farmItem.limitedAvailability){
                     scheduleItem.setAttribute("limitedAvailability", true);
                 }
@@ -414,9 +483,17 @@ function UpdateWeekGrid(weekGridContainer){
         dayColumn.appendChild(dayText);
         dayColumn.appendChild(dayList);
 
+        return dayColumn;
+}
+function UpdateWeekGrid(weekGridContainer){
+
+    weekGridContainer.replaceChildren();
+
+    for(let i = 0; i < Object.keys(DAY).length; i++){
+        let dayColumn = CreateDayColumn(i);
+        console.log(dayColumn);
         weekGridContainer.appendChild(dayColumn);
     }
-    
 }
 
 
@@ -451,18 +528,19 @@ function AddItemToList(){
     const TotalDayCount = 7;
 
 
-    if (parentInfo.availableDays.length < TotalDayCount){
+    let dayCount = parentInfo.availableDays.length;
+    if (dayCount < TotalDayCount){
         limitedAvailability = true;
     }
 
-
     let item = {
         "name": itemName.value,
-        "itemFamily": itemFamily.value,
+        "itemFamily": parentInfo.id,
         "amountOwned": parseInt(amountOwned.value),
         "amountRequired": parseInt(amountRequired.value),
         "requiresResin": parentInfo.requiresResin,
-        "limitedAvailability": limitedAvailability
+        "limitedAvailability": limitedAvailability,
+        "dayCount": dayCount
     };
 
 
@@ -472,3 +550,4 @@ function AddItemToList(){
     ResetAddItemForm(itemName, itemFamily, amountOwned, amountRequired);
     UpdateDisplay();
 }
+

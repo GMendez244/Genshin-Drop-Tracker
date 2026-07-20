@@ -102,9 +102,9 @@ function CompareItems(itemA, itemB){
 
     if (itemA.priority !== itemB.priority){
         if (itemA.priority < itemB.priority){
-            return -1;
-        }else{
             return 1;
+        }else{
+            return -1;
         }
     }
 

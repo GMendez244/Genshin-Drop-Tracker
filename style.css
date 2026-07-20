@@ -53,6 +53,7 @@
       border: 1px solid var(--border-color);
       border-radius: 8px;
       padding: 1.5rem;
+      max-width: 100%;
     }
 
     .panel h2 {
@@ -151,13 +152,6 @@
 
     /* Week Schedule Grid */
     .week-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      row-gap: 9px;
-    }
-/*
-    .week-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 1rem;
@@ -172,7 +166,6 @@
         grid-template-columns: 1fr;
       }
     }
-*/
     .day-column {
       background-color: var(--panel-color);
       border: 1px solid var(--border-color);
@@ -291,6 +284,10 @@
       transition: opacity 0.2s;
     }
 
+    .removeButton[complete="true"]{
+      background-color: green;
+      border: 1px solid black;
+    }
 [completion="0"]{
   accent-color: red;
 }
@@ -311,13 +308,16 @@
 }
 
 [requiresResin="true"]{
-  border-color: lightblue;
+  border-color: #3B82F6;
 }
 
-[requiresResin="true"]{
-  border-color: green;
+[requiresResin="true"][limitedAvailability="true"]{
+  border-color: #7E22CE;
 }
 
+[requiresResin="false"][limitedAvailability="false"]{
+  border-color: #94A3B8;
+}
 [limitedAvailability="true"]{
-  border-color: gold;
+  border-color: #F97316;
 }

@@ -398,7 +398,6 @@ function UpdateFarmItemsListContainer(farmItemsListContainer){
         const farmItemCard = CreateFarmItemCard(i);        
         farmItemsListContainer.appendChild(farmItemCard);
     }
-    console.log(farmItemsListContainer);
 }
 
 
@@ -491,7 +490,6 @@ function UpdateWeekGrid(weekGridContainer){
 
     for(let i = 0; i < Object.keys(DAY).length; i++){
         let dayColumn = CreateDayColumn(i);
-        console.log(dayColumn);
         weekGridContainer.appendChild(dayColumn);
     }
 }

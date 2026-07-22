@@ -12,69 +12,393 @@ const PRIORITY = {
     "LOW": 3,
     "NORMAL": 2,
     "HIGH": 1
+};
+
+const FARM_ID = {
+    "daily" : 0,
+    "dailyResin" : 1,
+    "dailyResinLowPriority" : 2,
+    "onceAWeek" : 3,
+    "localSpecialtyFarming" : 4,
+    "groupA": 5,
+    "groupB": 6,
+    "groupC": 7
+};
+
+const FARM_ITEM_TYPE = {
+    "weaponMaterial": 0
 }
 
-const ParentInformation = [
+const ItemInformation = [
     {
-        "id": "Daily",
+        "id": FARM_ID.daily,
+        "text": "Daily",
         "availableDays": [DAY.SUN, DAY.MON, DAY.TUE, DAY.WED, DAY.THUR, DAY.FRI, DAY.SAT],
         "requiresResin": false,
         "priority": PRIORITY.NORMAL
     },
     {
-        "id": "Daily-Resin",
+        "id": FARM_ID.dailyResin,
+        "text": "Daily-Resin",
         "availableDays": [DAY.SUN, DAY.MON, DAY.TUE, DAY.WED, DAY.THUR, DAY.FRI, DAY.SAT],
         "requiresResin": true,
         "priority": PRIORITY.NORMAL
     },
     {
-        "id": "Daily-Resin (Low Priority)",
+        "id": FARM_ID.dailyResinLowPriority,
+        "text": "Daily-Resin (Low Priority)",
         "availableDays": [DAY.SUN, DAY.MON, DAY.TUE, DAY.WED, DAY.THUR, DAY.FRI, DAY.SAT],
         "requiresResin": true,
         "priority": PRIORITY.LOW
     },
     {
-        "id": "Once a week",
+        "id": FARM_ID.onceAWeek,
+        "text": "Once a week",
         "availableDays": [DAY.SUN],
         "requiresResin": true,
         "priority": PRIORITY.HIGH
     },
     {
-        "id": "Local Speciality Farming (Monday, Wed, Fri)",
+        "id": FARM_ID.localSpecialtyFarming,
+        "text": "Local Speciality Farming (Monday, Wed, Fri)",
         "availableDays": [DAY.MON, DAY.WED, DAY.FRI],
         "requiresResin": false,
         "priority": PRIORITY.NORMAL
     },
     {
-        "id": "Group A - Resin (Monday, Thursday, Sunday)",
+        "id": FARM_ID.groupA,
+        "text": "Group A - Resin (Monday, Thursday, Sunday)",
         "availableDays": [DAY.MON, DAY.THUR, DAY.SUN],
         "requiresResin": true,
         "priority": PRIORITY.NORMAL
     },
     {
-        "id": "Group B - Resin (Tuesday, Friday, Sunday)",
+        "id": FARM_ID.groupB,
+        "text": "Group B - Resin (Tuesday, Friday, Sunday)",
         "availableDays": [DAY.TUE, DAY.FRI, DAY.SUN],
         "requiresResin": true,
         "priority": PRIORITY.NORMAL
     },
     {
-        "id": "Group C - Resin (Wednesday, Saturday, Sunday)",
+        "id": FARM_ID.groupC,
+        "text": "Group C - Resin (Wednesday, Saturday, Sunday)",
         "availableDays": [DAY.WED, DAY.SAT, DAY.SUN],
         "requiresResin": true,
         "priority": PRIORITY.NORMAL
     }
 ];
 
+const predefinedItems = [
+    {
+        "itemName": "Ember of Long Night Flint",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Afterglow of Long Night Flint",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Flare of Long Night Flint",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Blaze of Long Night Flint",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Dross of Pure Sacred Dewdrop",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Sublimation of Pure Sacred Dewdrop",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Spring of Pure Sacred Dewdrop",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Essence of Pure Sacred Dewdrop",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Oasis Garden's Reminiscence",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Oasis Garden's Kindness",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Oasis Garden's Mourning",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Oasis Garden's Truth",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Narukami's Wisdom",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Narukami's Joy",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Narukami's Affection",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Narukami's Valor",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Mist Veiled Lead Elixir",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Mist Veiled Mercury Elixir",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Mist Veiled Gold Elixir",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Mist Veiled Primo Elixir",
+        "infoID": FARM_ID.groupB   
+    },
+    {
+        "itemName": "Boreal Wolf's Milk Tooth",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Boreal Wolf's Cracked Tooth",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Boreal Wolf's Broken Fang",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Boreal Wolf's Nostalgia",
+        "infoID": FARM_ID.groupB
+    },
+    {
+        "itemName": "Artful Device Fragment",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Artful Device Replica",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Artful Device Inheritance",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Artful Device Wish",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Sundered Glory of the Far-North Scions",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Unyielding Delusion of the Far-North Scions",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Oblation of the Far-North Scions",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Aureate Radiance of the Far-North Scions",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Fragment of an Ancient Chord",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Chapter of an Ancient Chord",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Movement of an Ancient Chord",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Echo of an Ancient Chord",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Broken Goblet of the Pristine Sea",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Wine Goblet of the Pristine Sea",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Silver Goblet of the Pristine Sea",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Golden Goblet of the Pristine Sea",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Copper Talisman of the Forest Dew",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Iron Talisman of the Forest Dew",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Silver Talisman of the Forest Dew",
+        "infoID": FARM_ID.groupA 
+    },
+    {
+        "itemName": "Golden Talisman of the Forest Dew",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Echo of Scorching Might",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Remnant Glow of Scorching Might",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Dream of Scorching Might",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Olden Days of Scorching Might",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Coral Branch of Distant Sea",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Jeweled Branch of a Distant Sea",
+        "infoID": FARM_ID.groupA,
+    },
+    {
+        "itemName": "Jade Branch of a Distant Sea",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Golden Branch of a Distant Sea",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Mask of the Wicked Lieutenant",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Mask of the Tiger's Bite",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Mask of the One-Horned",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Mask of the Kijin",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Luminous Sands from Guyun",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Lustrous Stone from Guyun",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Relic from Guyun",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Divine Body from Guyun",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Grain of Aerosiderite",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Piece of Aerosiderite",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Bit of Aerosiderite",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Chunk of Aerosiderite",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Tile of Decarabian's Tower",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Debris of Decarabian's City",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Fragment of Decarabian's Epic",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Scattered Piece of Decarabian's Dream",
+        "infoID": FARM_ID.groupA
+    },
+    {
+        "itemName": "Fetters of the Dandelion Gladiator",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Chains of the Dandelion Gladiator",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Shackles of the Dandelion Gladiator",
+        "infoID": FARM_ID.groupC
+    },
+    {
+        "itemName": "Dream of the Dandelion Gladiator",
+        "infoID": FARM_ID.groupC
+    }
+    /* WEAPON ASCENSION MATERIALS COMPLETE!*/
 
+]; 
 
 let itemFarmList = [];
 
-function getParentInfoById(parentInfo, id){
-    for (const info of parentInfo){
+function getParentInfoByText(itemInfo, text){
+    for (const info of itemInfo){
+        if (info.text === text){
+            return window.structuredClone(info);
+        }
+    }
+    return false;
+}
+
+function getParentInfoById(itemInfo, id){
+    for (const info of itemInfo){
         if (info.id === id){
             return window.structuredClone(info);
         }
     }
+    
     return false;
 }
 
@@ -166,27 +490,57 @@ function CompareItems(itemA, itemB){
 
 }
 
-function FillDataListWithParents(e){
+function FillDataListWithItemInfo(e){
     let parentInfoDataList = document.getElementById("itemFamilies");
-    for(const info of ParentInformation){
+    for(const info of ItemInformation){
         let optItem = document.createElement("option");
-        optItem.value = info.id;
+        optItem.value = info.text;
+        
         parentInfoDataList.appendChild(optItem);
     }
 
 }
 
+function FillDataListWithPredefinedItems(e){
+    let predefinedItemsDataList = document.getElementById("predefinedItems");
+
+    for (const info of predefinedItems){
+        let predefinedItemOption = document.createElement("option");
+        predefinedItemOption.value = info.itemName;
+        predefinedItemOption.setAttribute("id", `predefined-item-${info.itemName}`);
+        predefinedItemOption.setAttribute("item-info-id", info.infoID);
+        predefinedItemsDataList.appendChild(predefinedItemOption);
+    }
+
+}
 function UpdateLocalInformation(){
     localStorage.setItem("itemFarmList", JSON.stringify(itemFarmList));
 }
 
+function SelectPredefinedItem(e){
+    const target = e.target;
+    const selectOption = document.getElementById(`predefined-item-${target.value}`);
+    if (selectOption){
+        let selectOptionItemInfoID = parseInt(selectOption.getAttribute("item-info-id"));
+        let itemInfo = getParentInfoById(ItemInformation, selectOptionItemInfoID);
+        
+        if(itemInfo !== false){
+            document.getElementById("itemFamily").value = itemInfo.text;
+        }
+        
+    }
+}
 function InitializeData(e){
     itemFarmList = JSON.parse(localStorage.getItem("itemFarmList"));
-
+    let searchInputButton = document.getElementById("search-input");
     if (itemFarmList === null){
         itemFarmList = [];
     }
-    FillDataListWithParents(e);
+    FillDataListWithItemInfo(e);
+    FillDataListWithPredefinedItems(e);
+
+    document.getElementById("itemName").addEventListener("input", SelectPredefinedItem);
+    searchInputButton.addEventListener("keyup", UpdateFarmItemsListContainer);
     document.getElementById("addToPlannerButton").addEventListener("click", AddItemToList);
     UpdateDisplay();
 }
@@ -197,10 +551,10 @@ function getAllFarmableIds(parentInformationList){
 }
 
 
-function isFarmableToday(parentInfo){
+function isFarmableToday(itemInfo){
     const today = new Date();
     const dayNumber = today.getDay();
-    for (const day of parentInfo.availableDays){
+    for (const day of itemInfo.availableDays){
         if (day === dayNumber){
             return true;
         }        
@@ -230,8 +584,8 @@ function ValidateAddItemInputs(itemName, itemFamily, amountOwned, amountRequired
         return false;
     }
 
-    const parentInfo = getParentInfoById(ParentInformation, itemFamily.value);
-    if (parentInfo === false){
+    const itemInfo = getParentInfoById(ItemInformation, itemFamily.value);
+    if (itemInfo === false){
         itemFamily.setCustomValidity("Invalid Family")
         itemFamily.reportValidity();
         
@@ -333,11 +687,12 @@ function getCompletionValue(amountOwned, amountNeeded){
 }
 
 
-function CreateFarmItemCard(itemIndex){
+function CreateFarmItemCard(itemIndex, farmItem){
         if (itemIndex >= itemFarmList.length || itemIndex < 0){
             return null;
         }
-        const farmItem = itemFarmList[itemIndex];        
+
+        
         let farmItemCard = document.createElement("div");
         farmItemCard.classList.add("farm-item-card");
 
@@ -391,12 +746,19 @@ function CreateFarmItemCard(itemIndex){
         return farmItemCard;
 }
 
-function UpdateFarmItemsListContainer(farmItemsListContainer){
+function UpdateFarmItemsListContainer(){
+    let farmItemsListContainer = document.getElementById("farmItemsList");
     farmItemsListContainer.replaceChildren();
-
+    const searchInput = document.getElementById("search-input");
     for (let i = 0; i < itemFarmList.length; i++){
-        const farmItemCard = CreateFarmItemCard(i);        
-        farmItemsListContainer.appendChild(farmItemCard);
+        const farmItem = itemFarmList[i];
+        let searchVal = searchInput.value;
+
+        if (searchVal === "" || farmItem.name.includes(searchVal)){
+            const farmItemCard = CreateFarmItemCard(i, farmItem);        
+            farmItemsListContainer.appendChild(farmItemCard);
+        }
+
     }
 }
 
@@ -440,8 +802,10 @@ function CreateDayColumn(dayIndex){
         
         let requiresResin = true;
         for (const farmItem of itemFarmList){
-            let pInfo = getParentInfoById(ParentInformation, farmItem.itemFamily);
-
+            let pInfo = getParentInfoById(ItemInformation, farmItem.itemFamily);
+            if (!pInfo){
+                console.log(farmItem.itemFamily);
+            }
 
             if (pInfo.availableDays.includes(getDayVal(day))){
                 let scheduleItem = document.createElement("button");
@@ -500,6 +864,7 @@ function UpdateDisplay(){
     let weekGridContainer = document.getElementById("weekGrid");
 
 
+
     itemFarmList.sort(CompareItems)
     UpdateFarmItemsListContainer(farmItemsListContainer);
     UpdateWeekGrid(weekGridContainer);
@@ -513,8 +878,10 @@ function isFarmingComplete(item){
 
 function UpdateItemPriorities(){
     for (let i = 0; i < itemFarmList.length; i++){
-        const parentInfo = getParentInfoById(ParentInformation, itemFarmList[i].itemFamily);
-        itemFarmList[i].priority = parentInfo.priority;
+        const itemInfo = getParentInfoByText(ItemInformation, itemFarmList[i].itemFamily);
+        console.log(itemInfo);
+        itemFarmList[i].itemFamily = itemInfo.id;
+
     }
 }
 
@@ -529,25 +896,25 @@ function AddItemToList(){
     }
 
 
-    let parentInfo = getParentInfoById(ParentInformation, itemFamily.value);
+    let itemInfo = getParentInfoByText(ItemInformation, itemFamily.value);
     let limitedAvailability = false;
     const TotalDayCount = 7;
 
 
-    let dayCount = parentInfo.availableDays.length;
+    let dayCount = itemInfo.availableDays.length;
     if (dayCount < TotalDayCount){
         limitedAvailability = true;
     }
 
     let item = {
         "name": itemName.value,
-        "itemFamily": parentInfo.id,
+        "itemFamily": itemInfo.id,
         "amountOwned": parseInt(amountOwned.value),
         "amountRequired": parseInt(amountRequired.value),
-        "requiresResin": parentInfo.requiresResin,
+        "requiresResin": itemInfo.requiresResin,
         "limitedAvailability": limitedAvailability,
         "dayCount": dayCount,
-        "priority": parentInfo.priority
+        "priority": itemInfo.priority
     };
 
 

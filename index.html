@@ -23,7 +23,8 @@
           <!-- Item Name -->
           <div class="form-group">
             <label for="itemName">Item Name</label>
-            <input type="text" id="itemName" class="form-control" placeholder="e.g. Teachings of Admonition" required>
+            <input list="predefinedItems" type="text" id="itemName" class="form-control" placeholder="e.g. Teachings of Admonition" required>
+            <datalist id="predefinedItems"></datalist>
           </div>
 
           <!-- Parent / Drop Group ID (maps to active days) -->
@@ -52,6 +53,10 @@
       <!-- Current Items Tracked -->
       <div class="panel" style="margin-top: 1.5rem;">
         <h2>My Items</h2>
+        <div class="form-group">
+          <label for="search-input">Search:</label>
+          <input class="form-control" type="text" name="search-input" id="search-input">
+        </div>
         <div id="farmItemsList" class="farm-items-list">
           <!-- Items will render dynamically here -->
             <div class="farm-item-card">

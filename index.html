@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Genshin Farm Planner</title>
   <link rel="stylesheet" href="style.css">
-  <script src="app.js"></script>
+  <script src="staticData.js"></script>
+  <script src="app.js" defer></script>
+  
 </head>
 <body>
 
@@ -29,9 +31,9 @@
 
           <!-- Parent / Drop Group ID (maps to active days) -->
           <div class="form-group">
-            <label for="itemFamily">Item Family</label>
-            <input class="form-control" list="itemFamilies" id="itemFamily" name="itemFamily">
-            <datalist id="itemFamilies"></datalist>
+            <label for="farmSchedule">Farm Schedule</label>
+            <input class="form-control" list="farmSchedules" id="farmSchedule" name="farmSchedule">
+            <datalist id="farmSchedules"></datalist>
           </div>
 
           <!-- Amounts Required and Owned -->
@@ -98,6 +100,46 @@
            </div>
         </div>
       </div>
+      <dialog id="item-conversion-dialog">
+        <div class="panel">
+          <h2 id="item-conversion-tier-1-name">Tier 01 Item</h2>
+          <div class="qty-row">
+            <div class="form-group">
+              <label for="item-conversion-tier-1-amount-owned">Tier 01 Owned:</label>
+              <input type="number" id="item-conversion-tier-1-amount-owned" name="item-conversion-tier-1-amount-owned" class="form-control" value="0" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+              <label for="item-conversion-tier-1-amount-required">Tier 01 Required: </label>
+              <input type="number" id="item-conversion-tier-1-amount-required" name="item-conversion-tier-1-amount-required" class="form-control" value="0" placeholder="0" min="0">
+            </div>
+          </div>
+          <h2 id="item-conversion-tier-2-name">Tier 02 Item</h2>
+          <div class="qty-row">
+              <div class="form-group">
+                <label for="item-conversion-tier-2-amount-owned">Tier 02 Owned:</label>
+                <input type="number" id="item-conversion-tier-2-amount-owned" name="item-conversion-tier-2-amount-owned" class="form-control" value="0" placeholder="0" min="0">
+              </div>
+              <div class="form-group">
+                <label for="item-conversion-tier-2-amount-required">Tier 02 Required:</label>
+                <input type="number" id="item-conversion-tier-2-amount-required" name="item-conversion-tier-2-amount-required" class="form-control" value="0" placeholder="0" min="0">
+              </div>
+            </div>
+          <h2 id="item-conversion-primary-item-name">Item Name</h2>
+          <div class="qty-row">
+            <div class="form-group">
+              <label for="item-conversion-primary-item-owned" id="item-conversion-primary-item-label">Primary item Owned: </label>
+              <input type="number" id="item-conversion-primary-item-owned" name="item-conversion-primary-item-owned" class="form-control" value="0" placeholder="0" min="0">
+            </div>
+            <div class="form-group">
+              <label for="item-conversion-primary-item-required" id="item-conversion-primary-item-label">Primary item Required: </label>
+              <input type="number" id="item-conversion-primary-item-required" name="item-conversion-primary-item-required" class="form-control" value="0" placeholder="0" min="0">
+            </div>
+
+          </div>
+          <button type="button" id="item-conversion-close-button" class="form-control">Close Dialog</button>
+
+        </div>
+      </dialog>
     </div>
   </div>
 

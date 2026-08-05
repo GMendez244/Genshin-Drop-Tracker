@@ -1,389 +1,8 @@
-const DAY = {
-    "SUN" : 0,
-    "MON" : 1,
-    "TUE" : 2,
-    "WED" : 3,
-    "THUR": 4,
-    "FRI" : 5,
-    "SAT" : 6,
-};
-
-const PRIORITY = {
-    "LOW": 3,
-    "NORMAL": 2,
-    "HIGH": 1
-};
-
-const FARM_ID = {
-    "daily" : 0,
-    "dailyResin" : 1,
-    "dailyResinLowPriority" : 2,
-    "onceAWeek" : 3,
-    "localSpecialtyFarming" : 4,
-    "groupA": 5,
-    "groupB": 6,
-    "groupC": 7
-};
-
-const FARM_ITEM_TYPE = {
-    "weaponMaterial": 0
-}
-
-const ItemInformation = [
-    {
-        "id": FARM_ID.daily,
-        "text": "Daily",
-        "availableDays": [DAY.SUN, DAY.MON, DAY.TUE, DAY.WED, DAY.THUR, DAY.FRI, DAY.SAT],
-        "requiresResin": false,
-        "priority": PRIORITY.NORMAL
-    },
-    {
-        "id": FARM_ID.dailyResin,
-        "text": "Daily-Resin",
-        "availableDays": [DAY.SUN, DAY.MON, DAY.TUE, DAY.WED, DAY.THUR, DAY.FRI, DAY.SAT],
-        "requiresResin": true,
-        "priority": PRIORITY.NORMAL
-    },
-    {
-        "id": FARM_ID.dailyResinLowPriority,
-        "text": "Daily-Resin (Low Priority)",
-        "availableDays": [DAY.SUN, DAY.MON, DAY.TUE, DAY.WED, DAY.THUR, DAY.FRI, DAY.SAT],
-        "requiresResin": true,
-        "priority": PRIORITY.LOW
-    },
-    {
-        "id": FARM_ID.onceAWeek,
-        "text": "Once a week",
-        "availableDays": [DAY.SUN],
-        "requiresResin": true,
-        "priority": PRIORITY.HIGH
-    },
-    {
-        "id": FARM_ID.localSpecialtyFarming,
-        "text": "Local Speciality Farming (Monday, Wed, Fri)",
-        "availableDays": [DAY.MON, DAY.WED, DAY.FRI],
-        "requiresResin": false,
-        "priority": PRIORITY.NORMAL
-    },
-    {
-        "id": FARM_ID.groupA,
-        "text": "Group A - Resin (Monday, Thursday, Sunday)",
-        "availableDays": [DAY.MON, DAY.THUR, DAY.SUN],
-        "requiresResin": true,
-        "priority": PRIORITY.NORMAL
-    },
-    {
-        "id": FARM_ID.groupB,
-        "text": "Group B - Resin (Tuesday, Friday, Sunday)",
-        "availableDays": [DAY.TUE, DAY.FRI, DAY.SUN],
-        "requiresResin": true,
-        "priority": PRIORITY.NORMAL
-    },
-    {
-        "id": FARM_ID.groupC,
-        "text": "Group C - Resin (Wednesday, Saturday, Sunday)",
-        "availableDays": [DAY.WED, DAY.SAT, DAY.SUN],
-        "requiresResin": true,
-        "priority": PRIORITY.NORMAL
-    }
-];
-
-const predefinedItems = [
-    {
-        "itemName": "Ember of Long Night Flint",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Afterglow of Long Night Flint",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Flare of Long Night Flint",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Blaze of Long Night Flint",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Dross of Pure Sacred Dewdrop",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Sublimation of Pure Sacred Dewdrop",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Spring of Pure Sacred Dewdrop",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Essence of Pure Sacred Dewdrop",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Oasis Garden's Reminiscence",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Oasis Garden's Kindness",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Oasis Garden's Mourning",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Oasis Garden's Truth",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Narukami's Wisdom",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Narukami's Joy",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Narukami's Affection",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Narukami's Valor",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Mist Veiled Lead Elixir",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Mist Veiled Mercury Elixir",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Mist Veiled Gold Elixir",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Mist Veiled Primo Elixir",
-        "infoID": FARM_ID.groupB   
-    },
-    {
-        "itemName": "Boreal Wolf's Milk Tooth",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Boreal Wolf's Cracked Tooth",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Boreal Wolf's Broken Fang",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Boreal Wolf's Nostalgia",
-        "infoID": FARM_ID.groupB
-    },
-    {
-        "itemName": "Artful Device Fragment",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Artful Device Replica",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Artful Device Inheritance",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Artful Device Wish",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Sundered Glory of the Far-North Scions",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Unyielding Delusion of the Far-North Scions",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Oblation of the Far-North Scions",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Aureate Radiance of the Far-North Scions",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Fragment of an Ancient Chord",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Chapter of an Ancient Chord",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Movement of an Ancient Chord",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Echo of an Ancient Chord",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Broken Goblet of the Pristine Sea",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Wine Goblet of the Pristine Sea",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Silver Goblet of the Pristine Sea",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Golden Goblet of the Pristine Sea",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Copper Talisman of the Forest Dew",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Iron Talisman of the Forest Dew",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Silver Talisman of the Forest Dew",
-        "infoID": FARM_ID.groupA 
-    },
-    {
-        "itemName": "Golden Talisman of the Forest Dew",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Echo of Scorching Might",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Remnant Glow of Scorching Might",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Dream of Scorching Might",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Olden Days of Scorching Might",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Coral Branch of Distant Sea",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Jeweled Branch of a Distant Sea",
-        "infoID": FARM_ID.groupA,
-    },
-    {
-        "itemName": "Jade Branch of a Distant Sea",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Golden Branch of a Distant Sea",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Mask of the Wicked Lieutenant",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Mask of the Tiger's Bite",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Mask of the One-Horned",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Mask of the Kijin",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Luminous Sands from Guyun",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Lustrous Stone from Guyun",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Relic from Guyun",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Divine Body from Guyun",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Grain of Aerosiderite",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Piece of Aerosiderite",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Bit of Aerosiderite",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Chunk of Aerosiderite",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Tile of Decarabian's Tower",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Debris of Decarabian's City",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Fragment of Decarabian's Epic",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Scattered Piece of Decarabian's Dream",
-        "infoID": FARM_ID.groupA
-    },
-    {
-        "itemName": "Fetters of the Dandelion Gladiator",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Chains of the Dandelion Gladiator",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Shackles of the Dandelion Gladiator",
-        "infoID": FARM_ID.groupC
-    },
-    {
-        "itemName": "Dream of the Dandelion Gladiator",
-        "infoID": FARM_ID.groupC
-    }
-    /* WEAPON ASCENSION MATERIALS COMPLETE!*/
-
-]; 
-
 let itemFarmList = [];
+let itemFamilyCollection;
 
-function getParentInfoByText(itemInfo, text){
+
+function getScheduleInfoByText(itemInfo, text){
     for (const info of itemInfo){
         if (info.text === text){
             return window.structuredClone(info);
@@ -392,7 +11,7 @@ function getParentInfoByText(itemInfo, text){
     return false;
 }
 
-function getParentInfoById(itemInfo, id){
+function getScheduleInfoById(itemInfo, id){
     for (const info of itemInfo){
         if (info.id === id){
             return window.structuredClone(info);
@@ -465,7 +84,7 @@ function CompareItems(itemA, itemB){
 
 
 /*    if (itemA.limitedAvailability === itemB.limitedAvailability){
-        console.log("ItemA", itemA, "ItemB", itemB);
+        
         // If both have the same resinValue, compare the completion rate
         if (itemA.requiresResin === itemB.requiresResin){
             console.log("Same resin value")
@@ -490,9 +109,9 @@ function CompareItems(itemA, itemB){
 
 }
 
-function FillDataListWithItemInfo(e){
-    let parentInfoDataList = document.getElementById("itemFamilies");
-    for(const info of ItemInformation){
+function FillDataListWithScheduleInfo(e){
+    let parentInfoDataList = document.getElementById("farmSchedules");
+    for(const info of FarmSchedule){
         let optItem = document.createElement("option");
         optItem.value = info.text;
         
@@ -504,44 +123,59 @@ function FillDataListWithItemInfo(e){
 function FillDataListWithPredefinedItems(e){
     let predefinedItemsDataList = document.getElementById("predefinedItems");
 
-    for (const info of predefinedItems){
+    for (info of predefinedItems){
         let predefinedItemOption = document.createElement("option");
         predefinedItemOption.value = info.itemName;
         predefinedItemOption.setAttribute("id", `predefined-item-${info.itemName}`);
-        predefinedItemOption.setAttribute("item-info-id", info.infoID);
+        predefinedItemOption.setAttribute("data-item-info-id", info.farmScheduleID);
+        predefinedItemOption.setAttribute("data-item-family", info.itemFamily);
         predefinedItemsDataList.appendChild(predefinedItemOption);
     }
 
 }
 function UpdateLocalInformation(){
     localStorage.setItem("itemFarmList", JSON.stringify(itemFarmList));
+    localStorage.setItem("itemFamilyCollection", JSON.stringify(itemFamilyCollection));
 }
 
-function SelectPredefinedItem(e){
+function choosePredefinedItemFromDatalist(e){
     const target = e.target;
     const selectOption = document.getElementById(`predefined-item-${target.value}`);
     if (selectOption){
-        let selectOptionItemInfoID = parseInt(selectOption.getAttribute("item-info-id"));
-        let itemInfo = getParentInfoById(ItemInformation, selectOptionItemInfoID);
+        let selectOptionItemInfoID = parseInt(selectOption.getAttribute("data-item-info-id"));
+        
+        let itemInfo = getScheduleInfoById(FarmSchedule, selectOptionItemInfoID);
         
         if(itemInfo !== false){
-            document.getElementById("itemFamily").value = itemInfo.text;
+            document.getElementById("farmSchedule").value = itemInfo.text;
         }
         
     }
 }
+
+function initializeItemFamilyCollection(e){
+        itemFamilyCollection = window.structuredClone(reducePredefinedItemsToItemFamily());
+        UpdateLocalInformation();
+}
 function InitializeData(e){
     itemFarmList = JSON.parse(localStorage.getItem("itemFarmList"));
+    itemFamilyCollection = JSON.parse(localStorage.getItem("itemFamilyCollection"));
     let searchInputButton = document.getElementById("search-input");
     if (itemFarmList === null){
         itemFarmList = [];
     }
-    FillDataListWithItemInfo(e);
-    FillDataListWithPredefinedItems(e);
 
-    document.getElementById("itemName").addEventListener("input", SelectPredefinedItem);
+    document.getElementById("itemName").addEventListener("input", choosePredefinedItemFromDatalist);
     searchInputButton.addEventListener("keyup", UpdateFarmItemsListContainer);
     document.getElementById("addToPlannerButton").addEventListener("click", AddItemToList);
+
+    if (itemFamilyCollection === null || itemFamilyCollection === undefined){
+        initializeItemFamilyCollection(e);
+    }
+
+
+    FillDataListWithScheduleInfo(e);
+    FillDataListWithPredefinedItems(e);
     UpdateDisplay();
 }
 
@@ -562,9 +196,14 @@ function isFarmableToday(itemInfo){
     return false;
 }
 
-function ValidateAddItemInputs(itemName, itemFamily, amountOwned, amountRequired){
+function ValidateAddItemInputs(itemName, farmSchedule, amountOwned, amountRequired){
+    itemName.setCustomValidity('');
+    farmSchedule.setCustomValidity('');
+    amountOwned.setCustomValidity('');
+    amountRequired.setCustomValidity('');
     if (!itemName.checkValidity()){
         itemName.reportValidity();
+        
         return false;
     }
 
@@ -579,19 +218,20 @@ function ValidateAddItemInputs(itemName, itemFamily, amountOwned, amountRequired
     itemName.setCustomValidity("");
 
 
-    if (!itemFamily.checkValidity()){
-        itemFamily.reportValidity();
+    if (!farmSchedule.checkValidity()){
+        farmSchedule.reportValidity();
         return false;
     }
 
-    const itemInfo = getParentInfoById(ItemInformation, itemFamily.value);
+    const itemInfo = getScheduleInfoByText(FarmSchedule, farmSchedule.value);
+
     if (itemInfo === false){
-        itemFamily.setCustomValidity("Invalid Family")
-        itemFamily.reportValidity();
+        farmSchedule.setCustomValidity("Invalid Family")
+        farmSchedule.reportValidity();
         
         return false;
     }else{
-        itemFamily.setCustomValidity("");
+        farmSchedule.setCustomValidity("");
     }
 
 
@@ -624,43 +264,154 @@ function ValidateAddItemInputs(itemName, itemFamily, amountOwned, amountRequired
 
 }
 
-function ResetAddItemForm(itemName, itemFamily, amountOwned, amountRequired){
+function ResetAddItemForm(itemName, farmSchedule, amountOwned, amountRequired){
     itemName.value = "";
-    itemFamily.value = "";
+    farmSchedule.value = "";
     amountOwned.value = "";
     amountRequired.value = "";
 }
 
+function UpdateConversionSliders(itemFamily, itemIndex, amountOwned, amountRequired){
+    let queryText = `input[type="range"][id="item-conversion-slider-${itemIndex}"]`;
+    let slider = document.querySelector(queryText);
+    if (slider !== null){
+        setupConversionSlider(slider, amountOwned, amountRequired);
+        updateSliderLabel(slider);
+    }
+}
 function UpdateAmountOwned(e){
-    let parentNode = e.target.parentNode.parentNode.parentNode;
-    let index = parentNode.getAttribute("index");
-    let id = parentNode.getAttribute("id");
-    let weekGridContainer = document.getElementById("weekGrid");
+    let itemName = e.target.getAttribute("data-item-name");
+    let amountOwnedIndex = parseInt(e.target.getAttribute("data-item-index"));
+    let dataItem = `[data-item-name="${itemName}"]`;
+    let inputElements = document.querySelectorAll(`input${dataItem}[data-item-owned="true"][data-item-index="${amountOwnedIndex}"]`);
+    let farmItem = itemFamilyCollection[itemName].items[amountOwnedIndex];
+    
+    if (farmItem === undefined){
+        if (amountOwnedIndex !== undefined && itemName !== undefined){
+            itemFamilyCollection[itemName].amountOwned[amountOwnedIndex] = parseInt(e.target.value);
+            let itemAmountOwned = itemFamilyCollection[itemName].amountOwned[amountOwnedIndex];
+            let itemAmountRequired = itemFamilyCollection[itemName].amountRequired[amountOwnedIndex];
+
+            UpdateConversionSliders(itemName, amountOwnedIndex, itemAmountOwned, itemAmountRequired);
+            UpdateLocalInformation();
+        }
+        return;
+    }
+
+    itemFamilyCollection[farmItem.itemFamily].amountOwned[amountOwnedIndex] = parseInt(e.target.value);
+    let itemAmountOwned = itemFamilyCollection[farmItem.itemFamily].amountOwned[amountOwnedIndex];
+    let itemAmountRequired = itemFamilyCollection[farmItem.itemFamily].amountRequired[amountOwnedIndex];
+    for (input of inputElements){
+        input.value = itemAmountOwned;
+    }
 
 
-    itemFarmList[index].amountOwned = e.target.value;
+    let sliders = document.querySelectorAll(`${dataItem}[data-item-index="${amountOwnedIndex}"] progress`);
+    
+    for (slider of sliders){
+        slider.value = itemAmountOwned;
+        slider.innerHTML = Math.floor((itemAmountOwned / itemAmountRequired) * 100) / 100;
+        slider.setAttribute("completion", getCompletionValue(itemAmountOwned, itemAmountRequired));
+    }
+
+    
+    let progressLabels = document.querySelectorAll(`${dataItem}[data-item-index="${amountOwnedIndex}"] div`);
+
+    for (label of progressLabels){
+        label.innerHTML = `Needed: ${itemAmountOwned}/${itemAmountRequired}`;
+    }
+
+    UpdateConversionSliders(itemName, amountOwnedIndex, itemAmountOwned, itemAmountRequired);
     UpdateLocalInformation();
-    UpdateDisplay();
-
-    document.getElementById(id).scrollIntoView({behavior: "smooth", block: "start"});
+//    document.getElementById(id).scrollIntoView({behavior: "smooth", block: "start"});
 }
 
 function UpdateAmountRequired(e){
-    let parentNode = e.target.parentNode.parentNode.parentNode;
+    let itemName = e.target.getAttribute("data-item-name");
+    let amountRequiredIndex = parseInt(e.target.getAttribute("data-item-index"));
+    let dataItem = `[data-item-name="${itemName}"]`;
+    let inputElements = document.querySelectorAll(`input${dataItem}[data-item-owned="false"][data-item-index="${amountRequiredIndex}"]`);
+    let farmItem = itemFamilyCollection[itemName].items[amountRequiredIndex];
+
+    
+
+    
+    if (farmItem === undefined){
+        if (amountRequiredIndex !== undefined && itemName !== undefined){
+            itemFamilyCollection[itemName].amountRequired[amountRequiredIndex] = parseInt(e.target.value);
+            
+            let itemAmountOwned = itemFamilyCollection[itemName].amountOwned[amountRequiredIndex];
+            let itemAmountRequired = itemFamilyCollection[itemName].amountRequired[amountRequiredIndex];
+
+            UpdateConversionSliders(itemName, amountRequiredIndex, itemAmountOwned, itemAmountRequired);
+
+            UpdateLocalInformation();            
+        }
+        return;
+    }
+
+    itemFamilyCollection[farmItem.itemFamily].amountRequired[amountRequiredIndex] = parseInt(e.target.value);
+    let itemAmountOwned = itemFamilyCollection[farmItem.itemFamily].amountOwned[amountRequiredIndex];
+    let itemAmountRequired = itemFamilyCollection[farmItem.itemFamily].amountRequired[amountRequiredIndex];
+    for(input of inputElements){
+        
+        
+        input.value = itemAmountRequired;
+    }
+
+
+    let sliders = document.querySelectorAll(`${dataItem}[data-item-index="${amountRequiredIndex}"] progress`);
+    
+    for (slider of sliders){
+        slider.max = parseInt(e.target.value);
+        slider.innerHTML = Math.floor((itemAmountOwned / itemAmountRequired) * 100) / 100;
+        slider.setAttribute("completion", getCompletionValue(itemAmountOwned, itemAmountRequired));
+    }
+
+    
+
+    let progressLabels = document.querySelectorAll(`${dataItem}[data-item-index="${amountRequiredIndex}"] div`);
+    
+    for (label of progressLabels){
+        label.innerHTML = `Needed: ${itemAmountOwned}/${itemAmountRequired}`;
+    }
+    UpdateConversionSliders(itemName, amountRequiredIndex, itemAmountOwned, itemAmountRequired);
+    UpdateLocalInformation();
+    /*
+    let parentNode = document.getElementById(e.target.getAttribute("data-item-name"));
     let index = parentNode.getAttribute("index");
+//  let id = parentNode.getAttribute("id");
     let weekGridContainer = document.getElementById("weekGrid");
     
     itemFarmList[index].amountRequired = e.target.value;
     UpdateLocalInformation();
     UpdateDisplay();
-    document.getElementById(id).scrollIntoView({behavior: "smooth", block: "start"});
-
+//  document.getElementById(id).scrollIntoView({behavior: "smooth", block: "start"});
+    */
 }
 
 
 function RemoveItemFromItemList(e){
     let parentNode = e.target.parentNode.parentNode;
     let index = parentNode.getAttribute("index");
+    let removeElement = itemFarmList[index];
+    let itemFamilyIndex = itemFarmList[index].index;
+    console.log("itemFamilyIndex", itemFamilyIndex);
+    itemFamilyCollection[removeElement.itemFamily].amountRequired[itemFamilyIndex] = 0;
+    itemFamilyCollection[removeElement.itemFamily].amountOwned[itemFamilyIndex] = 0;
+    let itemFamily = itemFarmList[index].itemFamily;
+
+    let isInPredefined = predefinedItems.find((item) => {
+        return  itemFamily === item.itemFamily;
+    })
+
+    console.log(isInPredefined);
+    
+    if (!isInPredefined){
+        console.error("Deleting item from itemFamilyCollection");
+        delete itemFamilyCollection[itemFamily]
+    }
+
     itemFarmList.splice(index, 1);
 
     UpdateLocalInformation();
@@ -710,14 +461,25 @@ function CreateFarmItemCard(itemIndex, farmItem){
 
         let amountOwnedInput = document.createElement("input");
         amountOwnedInput.setAttribute("type", "number");
-        amountOwnedInput.addEventListener("focusout", UpdateAmountOwned);
-        amountOwnedInput.value = farmItem.amountOwned;
+        amountOwnedInput.setAttribute("data-item-name", farmItem.itemFamily);
+        amountOwnedInput.setAttribute("data-item-owned", true);
+        amountOwnedInput.addEventListener("input", UpdateAmountOwned);
+        amountOwnedInput.setAttribute("data-item-index", farmItem.index);
+        let amountOwnedValue = itemFamilyCollection[farmItem.itemFamily].amountOwned[farmItem.index];
+        
 
+
+        amountOwnedInput.value = amountOwnedValue;
+        amountOwnedInput.setAttribute("min", 0);
 
         let amountRequiredInput = document.createElement("input");
         amountRequiredInput.setAttribute("type", "number");
-        amountRequiredInput.addEventListener("focusout", UpdateAmountRequired);
-        amountRequiredInput.value = farmItem.amountRequired;
+        amountRequiredInput.setAttribute("data-item-name", farmItem.itemFamily);
+        amountRequiredInput.setAttribute("data-item-owned", false);
+        amountRequiredInput.setAttribute("data-item-index", farmItem.index);
+        amountRequiredInput.addEventListener("input", UpdateAmountRequired);
+        amountRequiredInput.setAttribute("min", 1);
+        amountRequiredInput.value = itemFamilyCollection[farmItem.itemFamily].amountRequired[farmItem.index];
 
 
         
@@ -780,9 +542,36 @@ function getDayVal(dayString){
     }
 }
 
+
+function DayItemDragStart(e){
+    
+}
+
+function DayItemDragEnd(e){
+    let parent = e.target.parentNode.getBoundingClientRect();
+
+    
+
+    if (parent.top > e.clientY){
+        e.target.parentNode.prepend(e.target);
+        return;
+    }
+
+    for (node of e.target.parentNode.childNodes){
+        if (node === e.target){
+            continue;
+        }
+
+        if (node.offsetTop < e.clientY){
+            node.after(e.target);
+        }
+    }
+}
 function CreateDayColumn(dayIndex){
         let today = new Date().getDay();
-        let dayColumn = document.createElement("day-column");
+        let dayColumn = document.createElement("div");
+        dayColumn.addEventListener("dragstart", DayItemDragStart);
+        dayColumn.addEventListener("dragend", DayItemDragEnd);
         const day = getDayString((today + dayIndex) % Object.keys(DAY).length);
 
 
@@ -801,17 +590,23 @@ function CreateDayColumn(dayIndex){
         
         
         let requiresResin = true;
-        for (const farmItem of itemFarmList){
-            let pInfo = getParentInfoById(ItemInformation, farmItem.itemFamily);
+        for (let index = 0; index < itemFarmList.length; index++){
+
+            const farmItem = itemFarmList[index];
+            let pInfo = getScheduleInfoById(FarmSchedule, farmItem.farmSchedule);
             if (!pInfo){
-                console.log(farmItem.itemFamily);
+                
             }
 
             if (pInfo.availableDays.includes(getDayVal(day))){
                 let scheduleItem = document.createElement("button");
+                scheduleItem.draggable = true;
+
                 scheduleItem.classList.add("schedule-item");
                 scheduleItem.setAttribute("requiresResin", farmItem.requiresResin);
                 scheduleItem.setAttribute("id", `${day}-${farmItem.name}`);
+                scheduleItem.setAttribute("data-item-name", farmItem.itemFamily);
+                scheduleItem.setAttribute("data-item-index", farmItem.index);
                 if (farmItem.limitedAvailability){
                     scheduleItem.setAttribute("limitedAvailability", true);
                 }
@@ -820,18 +615,25 @@ function CreateDayColumn(dayIndex){
                 itemNameStrong.innerText = farmItem.name;
                 let qtyBadgeDiv = document.createElement("div");
                 qtyBadgeDiv.classList.add("qty-badge");
-                qtyBadgeDiv.innerText = `Needed: ${farmItem.amountOwned}/${farmItem.amountRequired}`;
-
+                qtyBadgeDiv.setAttribute("data-item-name", farmItem.itemFamily);
+                qtyBadgeDiv.setAttribute("data-item-progress-label",true);
+                let itemAmountOwned = itemFamilyCollection[farmItem.itemFamily].amountOwned[farmItem.index];
+                let itemAmountRequired = itemFamilyCollection[farmItem.itemFamily].amountRequired[farmItem.index];
+                
+                qtyBadgeDiv.innerText = `Needed: ${itemAmountOwned}/${itemAmountRequired}`;
+                
                 let slider = document.createElement("progress");
-                slider.value = farmItem.amountOwned;
-                slider.max = farmItem.amountRequired;
-                slider.innerHTML = Math.floor((farmItem.amountOwned / farmItem.amountRequired) * 100) / 100;
-                slider.setAttribute("completion", getCompletionValue(farmItem.amountOwned, farmItem.amountRequired));
+                slider.setAttribute("data-item-name", farmItem.itemFamily);
+                slider.setAttribute("data-item-slider", true);
+
+                
+                slider.value = itemAmountOwned;
+                slider.max = itemAmountRequired;
+                slider.innerHTML = Math.floor((itemAmountOwned / itemAmountRequired) * 100) / 100;
+                slider.setAttribute("completion", getCompletionValue(itemAmountOwned, itemAmountRequired));
 
 
-                scheduleItem.addEventListener("click", function (e){
-                    e.target.remove();
-                })
+                scheduleItem.addEventListener("click", ShowItemConverter);
 
 
                 scheduleItem.appendChild(itemNameStrong);
@@ -878,26 +680,38 @@ function isFarmingComplete(item){
 
 function UpdateItemPriorities(){
     for (let i = 0; i < itemFarmList.length; i++){
-        const itemInfo = getParentInfoByText(ItemInformation, itemFarmList[i].itemFamily);
-        console.log(itemInfo);
-        itemFarmList[i].itemFamily = itemInfo.id;
+        const itemInfo = getScheduleInfoByText(FarmSchedule, itemFarmList[i].farmSchedule);
+
+        
+        
+        itemFarmList["farmSchedule"] = itemFarmList[i].itemFamily;
+
 
     }
 }
 
 function AddItemToList(){
     let itemName = document.getElementById("itemName");
-    let itemFamily = document.getElementById("itemFamily");
+    let farmSchedule = document.getElementById("farmSchedule");
     let amountOwned = document.getElementById("amtOwned");
     let amountRequired = document.getElementById("amtNeeded");
+    let itemFamily = document.getElementById(`predefined-item-${itemName.value}`);
 
-    if (!ValidateAddItemInputs(itemName, itemFamily, amountOwned, amountRequired)){
+
+    if (!ValidateAddItemInputs(itemName, farmSchedule, amountOwned, amountRequired)){
         return;
     }
 
 
-    let itemInfo = getParentInfoByText(ItemInformation, itemFamily.value);
+    let itemInfo = getScheduleInfoByText(FarmSchedule, farmSchedule.value);
     let limitedAvailability = false;
+    
+
+    let family = -1;
+
+    if (itemFamily){
+        family = parseInt(itemFamily.getAttribute("data-item-family"));
+    }
     const TotalDayCount = 7;
 
 
@@ -908,20 +722,276 @@ function AddItemToList(){
 
     let item = {
         "name": itemName.value,
-        "itemFamily": itemInfo.id,
-        "amountOwned": parseInt(amountOwned.value),
-        "amountRequired": parseInt(amountRequired.value),
+        "farmSchedule": itemInfo.id,
         "requiresResin": itemInfo.requiresResin,
         "limitedAvailability": limitedAvailability,
         "dayCount": dayCount,
-        "priority": itemInfo.priority
+        "priority": itemInfo.priority,
+        "itemFamily": family,
+        "index": 0
     };
 
+    let index = 0;
 
+    if (family !== -1){
+        for (i of itemFamilyCollection[item.itemFamily].items){
+            if (i.itemName === item.name){
+                item.index = index;
+                itemFamilyCollection[item.itemFamily].amountOwned[index] = parseInt(amountOwned.value);
+                itemFamilyCollection[item.itemFamily].amountRequired[index] = parseInt(amountRequired.value);
+                break;
+            }
+            index++;
+        }
+    }else{
+        item.itemFamily = item.name;
+        if (!itemFamilyCollection[item.name]){
+            itemFamilyCollection[item.name] = { "items": [], "amountOwned": [], "amountRequired": []};
+        }
+
+        itemFamilyCollection[item.name].items.push(item);
+        itemFamilyCollection[item.name].amountOwned.push(parseInt(amountOwned.value));
+        itemFamilyCollection[item.name].amountRequired.push(parseInt(amountRequired.value));
+
+    }
     itemFarmList.push(item);
     UpdateLocalInformation();
 
-    ResetAddItemForm(itemName, itemFamily, amountOwned, amountRequired);
+    ResetAddItemForm(itemName, farmSchedule, amountOwned, amountRequired);
     UpdateDisplay();
 }
 
+function ShowItemConverter(e){
+    let itemName = e.target.getAttribute("data-item-name");
+    if (itemName === null){
+        console.error("Invalid farm item", itemName);
+        return;
+    }
+    let itemConverterSection = FillItemConverterInformation(itemName);
+
+    let dialogBox = document.getElementById("item-conversion-dialog");
+
+    if (dialogBox){
+        dialogBox.replaceChildren();
+        dialogBox.appendChild(itemConverterSection);
+    }
+
+    let rangeInputs = dialogBox.querySelectorAll('input[type="range"]');
+    for (rangeInput of rangeInputs){
+        rangeInput.dispatchEvent(new Event('input', {bubbles: true}));
+    }
+    dialogBox.showModal();
+}
+
+function SortItemsByTier(first, second){
+    return first.tier - second.tier
+}
+
+function getItemFamilyWithId(requestedID){
+    let low = 0;
+    let high = ItemFamily.length;
+    
+
+    let result = null;
+
+    while (low < high){
+        let mid = Math.trunc((low + high) / 2);
+        let currentID = ItemFamily[mid].id;
+        if (currentID === requestedID){
+            return ItemFamily[mid];
+        }
+
+        if (ItemFamily[mid].id > requestedID){
+            high = mid - 1;
+        }else{
+            low = mid + 1;
+        }
+    }
+    
+    return null;
+}
+
+
+
+
+
+function reducePredefinedItemsToItemFamily(){
+    return predefinedItems.reduce((dictionary, currentItem) => {
+        const itemFamilyId = currentItem.itemFamily;
+
+        if (!dictionary[itemFamilyId]){
+            dictionary[itemFamilyId] = { "amountRequired": [], "amountOwned": [], "items": []};
+        }
+
+        dictionary[itemFamilyId]["items"].push(currentItem);
+        dictionary[itemFamilyId]["amountRequired"].push(0);
+        dictionary[itemFamilyId]["amountOwned"].push(0);
+        return dictionary;
+    }, {});
+}
+
+function setupConversionSlider(slider, itemOwned, itemRequired){
+    console.log(slider);
+    let maxConversion = Math.trunc(itemOwned / 3);
+    let minConversion = 0;
+    let overageConversion = Math.max(Math.trunc((itemOwned - itemRequired) / 3),0);
+    console.log("Overage", overageConversion);
+    slider.setAttribute("type", "range");
+
+    slider.setAttribute("max", maxConversion);
+    slider.setAttribute("min", minConversion);
+    slider.setAttribute("step", 1);
+    slider.value = overageConversion;
+
+    slider.classList.add("form-control");
+
+}
+function updateSliderLabel(rangeInput){
+    let itemName = rangeInput.getAttribute("data-item-name");
+    let itemIndex = rangeInput.getAttribute("data-item-index");
+    let nextIndex = parseInt(itemIndex) + 1;
+    let queryText = `label[for="item-conversion-slider-${itemIndex}"]`;
+    let label = document.querySelector(queryText);
+
+    label.innerText = `Recommended conversion: ${parseInt(rangeInput.value) * 3} -> ${rangeInput.value}`;
+
+}
+
+function updateSliderLabelEvent(e){
+    updateSliderLabel(e.target);
+}
+function FillItemConverterInformation(itemFamily){
+
+
+    let items = itemFamilyCollection[itemFamily].items;    
+
+    let divPanel = document.createElement("div");
+    divPanel.classList.add("panel");
+    let i = 0;
+
+
+    for(item of items){
+        
+        let header = document.createElement("h2");
+        if (item.itemName !== undefined || item.itemName === null){
+            header.innerText = item.itemName;
+        }else{
+            header.innerText = item.name;
+        }
+
+        let qtyRow = document.createElement("div");
+        qtyRow.classList.add("qty-row");
+
+
+        let itemOwnedDiv = document.createElement("div");
+        itemOwnedDiv.classList.add("form-group");
+
+
+        let itemOwnedId = `item-conversion-owned-${item.itemName}`;
+        let itemOwnedLabel = document.createElement("label");
+        itemOwnedLabel.setAttribute("for", itemOwnedId);
+        itemOwnedLabel.innerText = "Owned: ";
+        itemOwnedDiv.appendChild(itemOwnedLabel);
+
+
+        let itemOwnedInput = document.createElement("input");
+        itemOwnedInput.setAttribute("type", "number");
+        itemOwnedInput.setAttribute("id", itemOwnedId);
+        itemOwnedInput.setAttribute("min", 0);
+        itemOwnedInput.setAttribute("data-item-owned", true);
+        itemOwnedInput.classList.add("form-control");
+        itemOwnedInput.setAttribute("data-item-index", i);
+        itemOwnedInput.setAttribute("data-item-name", item.itemFamily);
+        
+
+        itemOwnedDiv.appendChild(itemOwnedLabel);
+        itemOwnedDiv.appendChild(itemOwnedInput);
+
+
+
+
+        let itemRequestedDiv = document.createElement("div");
+        itemRequestedDiv.classList.add("form-group");
+
+        
+        let itemRequestedId = `item-conversion-requested-${item.itemName}`;
+        let itemRequestedLabel = document.createElement("label");
+        itemRequestedLabel.setAttribute("for", itemRequestedId);
+        itemRequestedLabel.innerText = "Required: ";
+        itemRequestedDiv.appendChild(itemRequestedLabel);
+
+
+        let itemRequestedInput = document.createElement("input");
+        itemRequestedInput.setAttribute("type", "number");
+        itemRequestedInput.setAttribute("id", itemRequestedId);
+        itemRequestedInput.setAttribute("min", 0);
+        itemRequestedInput.setAttribute("data-item-owned", false);
+        itemRequestedInput.classList.add("form-control");
+
+        itemRequestedInput.setAttribute("data-item-index", i);
+        itemRequestedInput.setAttribute("data-item-name", item.itemFamily);
+        
+
+        let amountRequired = itemFamilyCollection[itemFamily].amountRequired[i];
+        let amountOwned =  itemFamilyCollection[itemFamily].amountOwned[i];
+        itemRequestedInput.value = amountRequired;
+        itemOwnedInput.value = amountOwned;
+
+
+
+        itemOwnedInput.addEventListener("input", UpdateAmountOwned);
+        itemRequestedInput.addEventListener("input", UpdateAmountRequired);
+
+
+
+        
+        itemRequestedDiv.appendChild(itemRequestedInput);
+        qtyRow.appendChild(itemOwnedDiv);
+        qtyRow.appendChild(itemRequestedDiv);
+        divPanel.appendChild(header);
+        divPanel.appendChild(qtyRow);
+
+        if (i !== items.length - 1){
+            let sliderGroup = document.createElement("div");
+            sliderGroup.classList.add("form-group");
+            let sliderLabelText = `item-conversion-slider-${i}`;
+            let slider = document.createElement("input");        
+            setupConversionSlider(slider, amountOwned, amountRequired);
+            slider.setAttribute("data-item-name", item.itemFamily);
+            slider.setAttribute("data-item-index", i);
+            slider.addEventListener("input", updateSliderLabelEvent);
+            slider.setAttribute("id", sliderLabelText);
+
+
+            let sliderLabel = document.createElement("label");
+            sliderLabel.innerText = "Convert: 0/0";
+            sliderLabel.setAttribute("for", sliderLabelText);
+
+
+        
+            
+            sliderGroup.appendChild(sliderLabel);
+            sliderGroup.appendChild(slider);
+
+            qtyRow.appendChild(sliderGroup);
+            
+
+        }
+
+        i++;
+
+
+    }
+    let closeDialogButton = document.createElement("button");
+    closeDialogButton.setAttribute("type", "button");
+    closeDialogButton.addEventListener("click", CloseItemConverter);
+    closeDialogButton.innerText = "Close";
+    closeDialogButton.classList.add("form-control");
+    divPanel.appendChild(closeDialogButton);
+    return divPanel;
+}
+
+function CloseItemConverter(e){
+    let dialogBox = document.getElementById("item-conversion-dialog");
+    dialogBox.close();
+}
